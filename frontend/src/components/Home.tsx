@@ -7,31 +7,32 @@ interface HomeProps {
   cart: ProductProps[];
   products: ProductProps[];
   addToCart: (product: ProductProps) => void;
+  setProducts: (products: ProductProps[]) => void;
 }
 const Home: React.FC<HomeProps> = ({
   cart,
   products,
   addToCart,
+  setProducts,
 }: HomeProps): JSX.Element => {
-  // const addToCart=(_:React.MouseEvent<HTMLButtonElement, MouseEvent>,product:ProductProps)=>{
-  //   setCart([...cart,product])
-  //   console.log(cart)
-  // }
   return (
     <div className="font-serif w-full">
-      <Navbar products={cart} />
-      <div className="flex w-full">
+      <Navbar products={products} cart={cart} setProducts={setProducts}/>
+      <div className="flex w-full h-fi">
         <div className="w-1/6">
-          <Filter />
+          <Filter setProducts={setProducts} products={products}/>
         </div>
-        <div className="grid grid-cols-4 grid-rows-4 w-5/6">
+        <div className="grid grid-cols-4 grid-rows-4 w-5/6 h-fit gap-4">
           {products.map(({ product }, id) => {
             return (
-              <div key={id} className="m-2">
+              <div
+                key={id}
+                className="m-2 p-2 flex-col w-full h-5/6 border-2 border-solid"
+              >
                 <Product product={product} />
-                <div className="flex justify-center">
+                <div className="flex justify-center h-1/12 m-4">
                   <button
-                    className="m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+                    className="w-28 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
                     onClick={() => addToCart({ product })}
                   >
                     Add to cart
