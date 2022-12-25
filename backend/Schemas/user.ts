@@ -1,11 +1,13 @@
-import mongoose from 'mongoose';
-import {productSchema} from './product';
+import mongoose from "mongoose";
+import { productSchema } from "./product";
 
-const userSchema = new mongoose.Schema({
-    userID: mongoose.Schema.Types.ObjectId,
-    username: String,
-    password: String,
-    email: String,
-    cart: [productSchema]
-});
-export const User = mongoose.model('User', userSchema);
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, default: "" },
+    password: { type: String, default: "" },
+    email: { type: String, default: "" },
+    cart: { type: [productSchema], default: [] },
+  },
+  { versionKey: false }
+);
+export const User = mongoose.model("User", userSchema);

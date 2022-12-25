@@ -1,10 +1,13 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from "./components/About";
 import Cart from "./components/Cart";
 import Home from "./components/Home";
+import Login from "./components/Login";
 import NoPage from "./components/NoPage";
-import {ProductProps} from './components/Product'
+import Register from "./components/Register";
+import { ProductProps } from "./components/Product";
+import { LoginInfo } from "./components/Home";
 function App() {
   const [products, setProducts] = useState<ProductProps[]>([
     {
@@ -56,7 +59,6 @@ function App() {
       },
     },
     {
-      
       product: {
         _id: "5",
         title: "Best honey",
@@ -77,7 +79,8 @@ function App() {
           Size: "750 ml",
           HoneyType: "Brown",
         },
-        img: "https://th.bing.com/th/id/OIP.9tCTW3gqOTzne9l17WB5KgHaE8?w=296&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",}
+        img: "https://th.bing.com/th/id/OIP.9tCTW3gqOTzne9l17WB5KgHaE8?w=296&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+      },
     },
     {
       product: {
@@ -88,10 +91,10 @@ function App() {
           Size: "750 ml",
           HoneyType: "White",
         },
-        img: "https://th.bing.com/th/id/OIP.LBcdIeQvvwjmAasrPqqi0wHaHa?w=196&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",}
+        img: "https://th.bing.com/th/id/OIP.LBcdIeQvvwjmAasrPqqi0wHaHa?w=196&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+      },
     },
     {
-      
       product: {
         _id: "8",
         title: "Best honey",
@@ -100,8 +103,9 @@ function App() {
           Size: "250 ml",
           HoneyType: "Black",
         },
-        img: "https://th.bing.com/th/id/OIP.gb8ROBQt-9UNewfnYOvtlQHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",}
-    }
+        img: "https://th.bing.com/th/id/OIP.gb8ROBQt-9UNewfnYOvtlQHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+      },
+    },
   ]);
   const [cart, setCart] = useState<ProductProps[]>([
     // {
@@ -117,11 +121,16 @@ function App() {
     //   },
     // },
   ]);
-  const addToCart=(product:ProductProps)=>{
-    setCart([...cart,product])
-    console.log(cart)
-  }
-  
+  const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
+    loggedIn: false,
+    user: {},
+  });
+
+  const addToCart = (product: ProductProps) => {
+    setCart([...cart, product]);
+    console.log(cart);
+  };
+
   // useEffect(() => {
   //   setProducts([
   //     {
@@ -145,9 +154,28 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route index element={<Home setProducts={setProducts} cart={cart} addToCart={addToCart} products={products} />}/>
-          <Route path="cart" element={<Cart cart={cart} setCart={setCart}/>} />
+          <Route
+            index
+            element={
+              <Home
+                setProducts={setProducts}
+                cart={cart}
+                addToCart={addToCart}
+                products={products}
+                LoggedInInfo={LoggedInInfo}
+              />
+            }
+          />
+          <Route path="cart" element={<Cart cart={cart} setCart={setCart} />} />
           <Route path="about" element={<About />} />
+          <Route
+            path="login"
+            element={<Login setLoggedInInfo={setLoggedInInfo} />}
+          />
+          <Route
+            path="register"
+            element={<Register setLoggedInInfo={setLoggedInInfo} />}
+          />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

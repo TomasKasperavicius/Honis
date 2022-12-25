@@ -1,6 +1,4 @@
 import express, { Express, Request, Response } from "express";
-// const userRouter = require('./routes/user');
-// const mysqlConnection = require('./mysqlConnection');
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();

@@ -3,13 +3,19 @@ import Navbar from "./Navbar";
 import Product from "./Product";
 import Filter from "./Filter";
 import { ProductProps } from "./Product";
+export interface LoginInfo {
+  loggedIn: boolean;
+  user: any;
+}
 interface HomeProps {
+  LoggedInInfo:LoginInfo,
   cart: ProductProps[];
   products: ProductProps[];
   addToCart: (product: ProductProps) => void;
   setProducts: (products: ProductProps[]) => void;
 }
 const Home: React.FC<HomeProps> = ({
+  LoggedInInfo,
   cart,
   products,
   addToCart,
@@ -17,7 +23,7 @@ const Home: React.FC<HomeProps> = ({
 }: HomeProps): JSX.Element => {
   return (
     <div className="font-serif w-full">
-      <Navbar products={products} cart={cart} setProducts={setProducts}/>
+      <Navbar LoggedInInfo={LoggedInInfo} products={products} cart={cart} setProducts={setProducts}/>
       <div className="flex w-full h-fi">
         <div className="w-1/6">
           <Filter setProducts={setProducts} products={products}/>
