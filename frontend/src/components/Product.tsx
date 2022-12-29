@@ -6,7 +6,7 @@ export interface ProductProps {
     title: string;
     price: number;
     description: {[key: string]:any};
-    img: string;
+    image: string;
   };
 }
 const Product: React.FC<ProductProps> = ({
@@ -31,7 +31,7 @@ const Product: React.FC<ProductProps> = ({
       <div>Description {descriptionBreakdown}</div>
       <div className="flex-col m-2 text-center">
 
-        <img className="w-52 h-52 mx-auto" src={product.img} />
+        <img className="w-52 h-52 mx-auto" src={product.image} />
         <div>Price: {product.price}</div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from "./components/About";
 import Cart from "./components/Cart";
@@ -8,6 +8,8 @@ import NoPage from "./components/NoPage";
 import Register from "./components/Register";
 import { ProductProps } from "./components/Product";
 import { LoginInfo } from "./components/Home";
+import AddProduct from "./components/AddProduct";
+import axios from "axios";
 function App() {
   const [products, setProducts] = useState<ProductProps[]>([
     {
@@ -19,7 +21,8 @@ function App() {
           Size: "250 ml",
           HoneyType: "Brown",
         },
-        img: "https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -31,7 +34,8 @@ function App() {
           Size: "500 ml",
           HoneyType: "White",
         },
-        img: "https://th.bing.com/th/id/OIP.0VIholutUDxwJ43TfeZcmQHaHa?w=215&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.0VIholutUDxwJ43TfeZcmQHaHa?w=215&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -43,7 +47,8 @@ function App() {
           Size: "250 ml",
           HoneyType: "Black",
         },
-        img: "https://th.bing.com/th/id/OIP.5knJOJsik_KqTc2-L8oavQHaGJ?w=260&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.5knJOJsik_KqTc2-L8oavQHaGJ?w=260&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -55,7 +60,8 @@ function App() {
           Size: "750 ml",
           HoneyType: "White",
         },
-        img: "https://th.bing.com/th/id/OIP.R1nXj80cCs0X4bvLtKreQgHaE8?w=264&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.R1nXj80cCs0X4bvLtKreQgHaE8?w=264&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -67,7 +73,8 @@ function App() {
           Size: "500 ml",
           HoneyType: "Black",
         },
-        img: "https://th.bing.com/th/id/OIP.qtppUit9A2Ihh27iaQ-L0AHaE8?w=284&h=189&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.qtppUit9A2Ihh27iaQ-L0AHaE8?w=284&h=189&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -79,7 +86,8 @@ function App() {
           Size: "750 ml",
           HoneyType: "Brown",
         },
-        img: "https://th.bing.com/th/id/OIP.9tCTW3gqOTzne9l17WB5KgHaE8?w=296&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.9tCTW3gqOTzne9l17WB5KgHaE8?w=296&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -91,7 +99,8 @@ function App() {
           Size: "750 ml",
           HoneyType: "White",
         },
-        img: "https://th.bing.com/th/id/OIP.LBcdIeQvvwjmAasrPqqi0wHaHa?w=196&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.LBcdIeQvvwjmAasrPqqi0wHaHa?w=196&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
     {
@@ -103,24 +112,12 @@ function App() {
           Size: "250 ml",
           HoneyType: "Black",
         },
-        img: "https://th.bing.com/th/id/OIP.gb8ROBQt-9UNewfnYOvtlQHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
+        image:
+          "https://th.bing.com/th/id/OIP.gb8ROBQt-9UNewfnYOvtlQHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
       },
     },
   ]);
-  const [cart, setCart] = useState<ProductProps[]>([
-    // {
-    //   product: {
-    //     _id: "1",
-    //     title: "Best honey",
-    //     price: 5.4,
-    //     description: {
-    //       Size: "1000 ml",
-    //       HoneyType: "Brown honey",
-    //     },
-    //     img: "https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-    //   },
-    // },
-  ]);
+  const [cart, setCart] = useState<ProductProps[]>([]);
   const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
     loggedIn: false,
     user: {},
@@ -130,26 +127,28 @@ function App() {
     setCart([...cart, product]);
     console.log(cart);
   };
-
   // useEffect(() => {
-  //   setProducts([
-  //     {
-  //       title:"1l of honi",
-  //       description:{
-  //         size:"1l",
-  //       },
-  //       img:'https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7',
-  //     },{
-  //       title:"1l of honi",
-  //       description:{
-  //         size:"1l",
-  //       },
-  //       img:'https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7',
-  //     },
-  //   ])
-  //   return () => {
-  //   };
-  // }, [products]);
+  //   if (LoggedInInfo.loggedIn) {
+  //     (async () => {
+  //       const result = await axios.get(
+  //         `http://localhost:4545/${LoggedInInfo.user._id}`
+  //       );
+  //       if (result.status===200) { 
+  //         setCart(result.data.cart)
+  //       }
+  //     })();
+  //   }
+  //   (async () => {
+  //     const result = await axios.get(
+  //       "http://localhost:4545/products/all"
+  //     );
+  //     if (result.status===200) { 
+  //       setProducts(result.data.products)
+  //     }
+  //   }
+  //   )()
+  // }, [LoggedInInfo]);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -175,6 +174,12 @@ function App() {
           <Route
             path="register"
             element={<Register setLoggedInInfo={setLoggedInInfo} />}
+          />
+          <Route
+            path="/addProduct"
+            element={
+              <AddProduct products={products} setProducts={setProducts} />
+            }
           />
           <Route path="*" element={<NoPage />} />
         </Route>

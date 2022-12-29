@@ -11,13 +11,13 @@ router.post("/login", async (req: Request, res: Response) => {
     }
     const user = await User.find({ email: email }).exec();
     if (user.length == 0) {
-      res.status(400).send({ message: "User doesn't exist." });
+      return res.status(400).send({ message: "User doesn't exist." });
     }
     if (await argon2d.verify(user[0].password!, password)) {
-      res.status(200).send({user:user[0], message: "success" });
-    } else {
-      res.status(400).send({ message: "Wrong email or password" });
+      return res.status(200).send({ user: user[0], message: "success" });
     }
+
+    res.status(400).send({ message: "Wrong email or password" });
   } catch (error) {
     res.status(500).send({ message: error });
   }
@@ -37,15 +37,14 @@ router.post("/register", async (req: Request, res: Response) => {
     }).exec();
 
     if (result.length !== 0) {
-      res.status(400).send({ message: "User already exists." });
-    } else {
+      return res.status(400).send({ message: "User already exists." });
+    }
       const hashedPassword = await argon2d.hash(password);
       const user = await User.insertMany({
         ...req.body,
         password: hashedPassword,
       });
       res.status(200).send({ user: user[0], message: "success" });
-    }
   } catch (error) {
     res.status(500).send({ message: error });
   }
@@ -53,7 +52,7 @@ router.post("/register", async (req: Request, res: Response) => {
 router.get("/all", async (_: Request, res: Response) => {
   try {
     const result = await User.find({});
-    res.status(200).send(result);
+    res.status(200).send({users:result});
   } catch (error) {
     res.status(500).send({ message: error });
   }
@@ -63,7 +62,7 @@ router
   .get(async (req: Request, res: Response) => {
     try {
       const result = await User.findById(req.params.id).exec();
-      res.status(200).send(result);
+      res.status(200).send({user:result});
     } catch (error) {
       res.status(500).send({ message: error });
     }
