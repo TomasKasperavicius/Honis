@@ -10,113 +10,9 @@ import { ProductProps } from "./components/Product";
 import { LoginInfo } from "./components/Home";
 import AddProduct from "./components/AddProduct";
 import axios from "axios";
+
 function App() {
-  const [products, setProducts] = useState<ProductProps[]>([
-    {
-      product: {
-        _id: "1",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "250 ml",
-          HoneyType: "Brown",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.xA8SVmrYeWO_xyL5LRuKfQHaH-?w=185&h=200&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "2",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "500 ml",
-          HoneyType: "White",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.0VIholutUDxwJ43TfeZcmQHaHa?w=215&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "3",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "250 ml",
-          HoneyType: "Black",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.5knJOJsik_KqTc2-L8oavQHaGJ?w=260&h=215&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "4",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "750 ml",
-          HoneyType: "White",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.R1nXj80cCs0X4bvLtKreQgHaE8?w=264&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "5",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "500 ml",
-          HoneyType: "Black",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.qtppUit9A2Ihh27iaQ-L0AHaE8?w=284&h=189&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "6",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "750 ml",
-          HoneyType: "Brown",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.9tCTW3gqOTzne9l17WB5KgHaE8?w=296&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "7",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "750 ml",
-          HoneyType: "White",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.LBcdIeQvvwjmAasrPqqi0wHaHa?w=196&h=197&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-    {
-      product: {
-        _id: "8",
-        title: "Best honey",
-        price: 5.4,
-        description: {
-          Size: "250 ml",
-          HoneyType: "Black",
-        },
-        image:
-          "https://th.bing.com/th/id/OIP.gb8ROBQt-9UNewfnYOvtlQHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7",
-      },
-    },
-  ]);
+  const [products, setProducts] = useState<ProductProps[]>([]);
   const [cart, setCart] = useState<ProductProps[]>([]);
   const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
     loggedIn: false,
@@ -125,29 +21,28 @@ function App() {
 
   const addToCart = (product: ProductProps) => {
     setCart([...cart, product]);
-    console.log(cart);
   };
-  // useEffect(() => {
-  //   if (LoggedInInfo.loggedIn) {
-  //     (async () => {
-  //       const result = await axios.get(
-  //         `http://localhost:4545/${LoggedInInfo.user._id}`
-  //       );
-  //       if (result.status===200) { 
-  //         setCart(result.data.cart)
-  //       }
-  //     })();
-  //   }
-  //   (async () => {
-  //     const result = await axios.get(
-  //       "http://localhost:4545/products/all"
-  //     );
-  //     if (result.status===200) { 
-  //       setProducts(result.data.products)
-  //     }
-  //   }
-  //   )()
-  // }, [LoggedInInfo]);
+  useEffect(() => {
+    if (LoggedInInfo.loggedIn) {
+      (async () => {
+        const result = await axios.get(
+          `http://localhost:4545/${LoggedInInfo.user._id}`
+        );
+        if (result.status===200) { 
+          setCart(result.data.cart)
+        }
+      })();
+    }
+    (async () => {
+      const result = await axios.get(
+        "http://localhost:4545/product/all"
+      );
+      if (result.status===200) { 
+        setProducts(result.data.products)
+      }
+    }
+    )()
+  }, [LoggedInInfo]);
 
   return (
     <BrowserRouter>

@@ -6,6 +6,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { ProductProps } from "./Product";
 import { LoginInfo } from "./Home";
+import axios from "axios";
 interface NavbarProps {
   LoggedInInfo: LoginInfo;
   products: ProductProps[];
@@ -27,8 +28,13 @@ const Navbar: React.FC<NavbarProps> = ({
     }
     return arr.some((e) => e === true);
   };
-  const searchSubmit = () => {
-    if (inputElement.current?.value === undefined) return;
+  const searchSubmit = async () => {
+    if (inputElement.current?.value === undefined){
+      const result = await axios.get("http://localhost:4545/product/all")
+      if (result.status===200) { 
+        setProducts(result.data.products)
+      }
+    }
     setProducts(products.filter((obj) => predicate(obj.product)));
   };
   return (

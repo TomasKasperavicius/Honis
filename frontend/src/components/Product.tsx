@@ -4,8 +4,8 @@ export interface ProductProps {
   product: {
     _id: string;
     title: string;
-    price: number;
-    description: {[key: string]:any};
+    price: {$numberDecimal:number};
+    description: {};
     image: string;
   };
 }
@@ -28,11 +28,10 @@ const Product: React.FC<ProductProps> = ({
   return (
     <div className="flex-col w-full h-full">
       <div>Title: {product.title}</div>
-      <div>Description {descriptionBreakdown}</div>
+      <div>Description <br/>{Object.keys(descriptionBreakdown).length === 0 ? <i>Empty</i>:descriptionBreakdown}</div>
       <div className="flex-col m-2 text-center">
-
         <img className="w-52 h-52 mx-auto" src={product.image} />
-        <div>Price: {product.price}</div>
+        <div>Price: {product.price.$numberDecimal}</div>
       </div>
     </div>
   );

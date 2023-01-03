@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ProductProps } from "./Product";
-interface AddProductInfo{
-      image: string,
-      price: number,
-      title: string,
-      description: any,
+interface AddProductInfo {
+  image?: string;
+  price: number;
+  title: string;
+  description: { HoneyType: string; Size: string };
 }
 interface AddProductProps {
   products: ProductProps[];
@@ -17,10 +17,13 @@ const AddProduct: React.FC<AddProductProps> = ({
   setProducts,
 }: AddProductProps): JSX.Element => {
   const [input, setInput] = useState<AddProductInfo>({
-      image: "",
-      price: 0,
-      title: "",
-      description: {},
+    image: "",
+    price: 0,
+    title: "",
+    description: {
+      HoneyType: "",
+      Size: "",
+    },
   });
   const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,14 +32,25 @@ const AddProduct: React.FC<AddProductProps> = ({
       [e.target.id]:
         e.target.files === null ? e.target.value : e.target.files[0],
     });
-    console.log(input);
+  };
+  const handleDescriptionChange = (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInput({
+      ...input,
+      description: { ...input.description, [e.target.id]: e.target.value },
+    });
   };
   const addProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const form = new FormData(e.currentTarget);
+      form.append("description",JSON.stringify({HoneyType:input.description.HoneyType,Size:input.description.Size+" ml"}))
       const { status, data } = await axios.post(
         "http://localhost:4545/product/add",
-        input,
+        form,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -47,9 +61,8 @@ const AddProduct: React.FC<AddProductProps> = ({
         throw new Error("Wrong credentials");
       }
       data.product.price = data.product.price.$numberDecimal;
-      data.product.description = {};
-      console.log(JSON.stringify(data));
-      setProducts([...products, {product:data.product}]);
+      //data.product.description = {};
+      setProducts([...products, data.product]);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -61,35 +74,69 @@ const AddProduct: React.FC<AddProductProps> = ({
         onSubmit={(e) => addProduct(e)}
         className="w-1/4 h-3/4 flex flex-col justify-evenly items-center bg-amber-100 rounded p-2"
       >
-        <div>
+        <div className="flex flex-col w-2/3">
           <label htmlFor="title">Title: </label>
-          <br />
           <input
             className=" rounded-lg"
             onChange={(e) => handleInputChange(e)}
             id="title"
+            name="title"
             type="text"
             value={input.title}
             required
           />
         </div>
-        <div>
+        <div className="flex flex-col w-2/3">
           <label htmlFor="price">Price: </label>
-          <br />
           <input
             className=" rounded-lg"
             onChange={(e) => handleInputChange(e)}
             id="price"
             type="number"
+            name="price"
+            min={0}
+            step=".01"
             value={input.price}
             required
           />
         </div>
-        <div>
-          <label htmlFor="image">Image: </label>
-          <br />
+        <div className="flex flex-col items-start w-2/3">
+          <label htmlFor="HoneyType">Honey type: </label>
+          <select
+            required
+            className="w-full rounded-lg"
+            onChange={(e) => handleDescriptionChange(e)}
+            id="HoneyType"
+            value={input.description.HoneyType}
+          >
+            <option value="Clover">Clover</option>
+            <option value="Wildflower">Wildflower</option>
+            <option value="Acacia">Acacia</option>
+            <option value="Alfalfa">Alfalfa</option>
+            <option value="Buckwheat">Buckwheat</option>
+            <option value="Creamed">Creamed</option>
+            <option value="Manuka">Manuka</option>
+            <option value="Eucalyptus">Eucalyptus</option>
+            <option value="Orange Blossom">Orange Blossom</option>
+            <option value="Baker's Special">Baker's Special</option>
+          </select>
+        </div>
+        <div className="flex flex-col w-2/3">
+          <label htmlFor="Size">Size in ml: </label>
           <input
             className=" rounded-lg"
+            onChange={(e) => handleDescriptionChange(e)}
+            id="Size"
+            min={1}
+            type="number"
+            value={input.description.Size}
+            required
+          />
+        </div>
+        <div className="flex flex-col w-2/3">
+          <label htmlFor="image">Image: </label>
+          <input
+            name="image"
             onChange={(e) => handleInputChange(e)}
             id="image"
             type="file"

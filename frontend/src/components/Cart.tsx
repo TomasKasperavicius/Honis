@@ -16,19 +16,26 @@ const Cart: React.FC<CartProps> = ({
     <div>
       {cart.length > 0 ? (
         <>
-          <div>Total items: {cart.length}</div>
+          <div className="flex px-4 bg-gradient-to-r to-indigo-500 via-purple-500 from-pink-500">
+          <Link to="/">
+              <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70">
+                Back
+              </button>
+            </Link>
+          </div>
+
           <div className="w-full h-full grid grid-cols-4 grid-rows-4 gap-4 m-4">
-            {cart.map(({ product }, id) => {
+            {cart.map((product: any, id) => {
               return (
                 <div key={id}>
                   <Product product={product} />
                   <div className="flex justify-center">
                     <button
                       className="m-2 p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
-                      onClick={() =>
+                      onClick={() =>{
                         setCart(
-                          cart.filter((obj) => obj.product._id != product._id)
-                        )
+                          cart.filter((obj:any) => obj._id != product._id)
+                        )}
                       }
                     >
                       Remove

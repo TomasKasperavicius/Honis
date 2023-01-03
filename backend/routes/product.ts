@@ -20,9 +20,11 @@ router.post("/add", async (req: Request, res: Response) => {
         .image as UploadedFile;
       const uploadPath: string = path.resolve("./public/" + uploadedFile.name);
       req.body.image = process.env.FILE_API + uploadedFile.name;
-      await uploadedFile.mv(uploadPath); 
-      const product = await Product.insertMany(req.body);
-      res.status(200).send({ product: product[0], message: "success" });
+      await uploadedFile.mv(uploadPath);
+      req.body.description = JSON.parse(req.body.description)
+      const product = new Product(req.body);
+      const result = await product.save();
+      res.status(200).send({ product: result, message: "success" });
     }
     else{
       res.status(400).send("Product image is missing");
@@ -33,23 +35,6 @@ router.post("/add", async (req: Request, res: Response) => {
   }
 });
 
-// To handle the download file request
-// router.get("/download", function (req, res) {
-//   // The res.download() talking file path to be downloaded
-//   res.download(__dirname + "/download_gfg.txt", function (err) {
-//     if (err) {
-//       console.log(err);
-//     }
-//   });
-// });
-// router.post("/add", async (req: Request, res: Response) => {
-//   try {
-//     const product = await Product.insertMany(req.body);
-//     res.status(200).send({ product: product[0], message: "success" });
-//   } catch (error) {
-//     res.status(500).send({ message: error });
-//   }
-// });
 router
   .route("/:id")
   .get(async (req: Request, res: Response) => {
