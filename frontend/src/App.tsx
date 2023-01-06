@@ -57,6 +57,7 @@ function App() {
                 addToCart={addToCart}
                 products={products}
                 LoggedInInfo={LoggedInInfo}
+                setCart={setCart}
               />
             }
           />

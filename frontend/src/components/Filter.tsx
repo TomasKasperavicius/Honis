@@ -11,7 +11,7 @@ const Filter: React.FC<FilterProps> = ({
   products,
   setProducts,
 }: FilterProps): JSX.Element => {
-  var filter:Filter = { Size: undefined, HoneyType: undefined };
+  var filter:Filter = { Capacity: undefined, HoneyType: undefined };
   const predicate = ({description}:any):boolean=>{
     for (let key in description) {
       if (filter[key] === undefined) {
@@ -50,25 +50,25 @@ const Filter: React.FC<FilterProps> = ({
           <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("HoneyType","Black")}></input>
         </div>
       </div>
-      Size:
+      Capacity:
       <div className="grid grid-cols-2 grid-rows-1 gap-4 bg-red-100">
         <div>
           <label>250ml</label>
         </div>
         <div className="flex items-center">
-          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Size","250 ml")}></input>
+          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Capacity","250 ml")}></input>
         </div>
         <div>
           <label>500ml</label>
         </div>
         <div className="flex items-center">
-          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Size","500 ml")}></input>
+          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Capacity","500 ml")}></input>
         </div>
         <div>
           <label>750ml</label>
         </div>
         <div className="flex items-center">
-          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Size","750 ml")}></input>
+          <input className="w-4 h-4" type="checkbox" onClick={()=>changeFilter("Capacity","750 ml")}></input>
         </div>
       </div>
     </div>

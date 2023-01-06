@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { ProductProps } from "./Product";
 import { LoginInfo } from "./Home";
 import axios from "axios";
+import { stringify } from "querystring";
 interface NavbarProps {
   LoggedInInfo: LoginInfo;
   products: ProductProps[];
@@ -20,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({
   setProducts,
 }: NavbarProps): JSX.Element => {
   const inputElement = useRef<HTMLInputElement | null>(null);
-  const predicate = ({ description }: any): boolean => {
+  const predicate = ({description}: any): boolean => {
     const arr: boolean[] = [];
     for (let key in description) {
       const result = description[key].toLowerCase();
@@ -29,10 +30,11 @@ const Navbar: React.FC<NavbarProps> = ({
     return arr.some((e) => e === true);
   };
   const searchSubmit = async () => {
-    if (inputElement.current?.value === undefined){
+    if (inputElement.current?.value === ""){
       const result = await axios.get("http://localhost:4545/product/all")
       if (result.status===200) { 
         setProducts(result.data.products)
+        return;
       }
     }
     setProducts(products.filter((obj) => predicate(obj.product)));

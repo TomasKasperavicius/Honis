@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Product from "./Product";
 import Filter from "./Filter";
 import { ProductProps } from "./Product";
 import { useNavigate } from "react-router-dom";
+import AddToCart from "./AddToCart";
 export interface LoginInfo {
   loggedIn: boolean;
   user: any;
@@ -14,6 +15,7 @@ interface HomeProps {
   products: ProductProps[];
   addToCart: (product: ProductProps) => void;
   setProducts: (products: ProductProps[]) => void;
+  setCart: (products: ProductProps[]) => void;
 }
 const Home: React.FC<HomeProps> = ({
   LoggedInInfo,
@@ -21,12 +23,12 @@ const Home: React.FC<HomeProps> = ({
   products,
   addToCart,
   setProducts,
+  setCart,
 }: HomeProps): JSX.Element => {
   const navigate = useNavigate();
   const addProduct = () => {
     navigate("/addProduct");
   };
-
   return (
     <div className="font-serif w-full">
       <Navbar
@@ -56,14 +58,13 @@ const Home: React.FC<HomeProps> = ({
                   className="m-2 p-2 flex-col w-full h-5/6 border-2 border-solid"
                 >
                   <Product product={product} />
-                  <div className="flex justify-center h-1/12 m-4">
-                    <button
-                      className="w-28 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
-                      onClick={() => addToCart(product)}
-                    >
-                      Add to cart
-                    </button>
-                  </div>
+                  <AddToCart
+                    product={product}
+                    addToCart={addToCart}
+                    products={products}
+                    cart={cart}
+                    setCart={setCart}
+                  />
                 </div>
               );
             })}

@@ -5,8 +5,9 @@ import { ProductProps } from "./Product";
 interface AddProductInfo {
   image?: string;
   price: number;
+  units: number;
   title: string;
-  description: { HoneyType: string; Size: string };
+  description: { HoneyType: string; Capacity: string };
 }
 interface AddProductProps {
   products: ProductProps[];
@@ -20,9 +21,10 @@ const AddProduct: React.FC<AddProductProps> = ({
     image: "",
     price: 0,
     title: "",
+    units: 1,
     description: {
       HoneyType: "",
-      Size: "",
+      Capacity: "",
     },
   });
   const navigate = useNavigate();
@@ -47,7 +49,13 @@ const AddProduct: React.FC<AddProductProps> = ({
     e.preventDefault();
     try {
       const form = new FormData(e.currentTarget);
-      form.append("description",JSON.stringify({HoneyType:input.description.HoneyType,Size:input.description.Size+" ml"}))
+      form.append(
+        "description",
+        JSON.stringify({
+          HoneyType: input.description.HoneyType,
+          Capacity: input.description.Capacity + " ml",
+        })
+      );
       const { status, data } = await axios.post(
         "http://localhost:4545/product/add",
         form,
@@ -60,8 +68,6 @@ const AddProduct: React.FC<AddProductProps> = ({
       if (status !== 200) {
         throw new Error("Wrong credentials");
       }
-      data.product.price = data.product.price.$numberDecimal;
-      //data.product.description = {};
       setProducts([...products, data.product]);
       navigate("/");
     } catch (error) {
@@ -100,6 +106,19 @@ const AddProduct: React.FC<AddProductProps> = ({
             required
           />
         </div>
+        <div className="flex flex-col w-2/3">
+          <label htmlFor="units">Units: </label>
+          <input
+            className=" rounded-lg"
+            onChange={(e) => handleInputChange(e)}
+            id="units"
+            type="number"
+            name="units"
+            min={1}
+            value={input.units}
+            required
+          />
+        </div>
         <div className="flex flex-col items-start w-2/3">
           <label htmlFor="HoneyType">Honey type: </label>
           <select
@@ -122,14 +141,14 @@ const AddProduct: React.FC<AddProductProps> = ({
           </select>
         </div>
         <div className="flex flex-col w-2/3">
-          <label htmlFor="Size">Size in ml: </label>
+          <label htmlFor="Capacity">Capacity in ml: </label>
           <input
             className=" rounded-lg"
             onChange={(e) => handleDescriptionChange(e)}
-            id="Size"
+            id="Capacity"
             min={1}
             type="number"
-            value={input.description.Size}
+            value={input.description.Capacity}
             required
           />
         </div>
