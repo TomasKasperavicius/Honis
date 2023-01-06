@@ -6,17 +6,15 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { ProductProps } from "./Product";
 import { LoginInfo } from "./Home";
-import axios from "axios";
-import { stringify } from "querystring";
 interface NavbarProps {
   LoggedInInfo: LoginInfo;
-  products: ProductProps[];
+  tempProducts: ProductProps[];
   cart: ProductProps[];
   setProducts: (products: ProductProps[]) => void;
 }
 const Navbar: React.FC<NavbarProps> = ({
   LoggedInInfo,
-  products,
+  tempProducts,
   cart,
   setProducts,
 }: NavbarProps): JSX.Element => {
@@ -29,15 +27,8 @@ const Navbar: React.FC<NavbarProps> = ({
     }
     return arr.some((e) => e === true);
   };
-  const searchSubmit = async () => {
-    if (inputElement.current?.value === ""){
-      const result = await axios.get("http://localhost:4545/product/all")
-      if (result.status===200) { 
-        setProducts(result.data.products)
-        return;
-      }
-    }
-    setProducts(products.filter((obj) => predicate(obj.product)));
+  const searchSubmit = () => {
+    setProducts(tempProducts.filter((obj) => predicate(obj)));
   };
   return (
     <IconContext.Provider value={{ size: "40px" }}>
@@ -61,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({
               ref={inputElement}
             ></input>
             <div className="absolute right-0 top-0">
-              <button onClick={searchSubmit}>
+              <button title="searchBar" onClick={searchSubmit}>
                 <AiOutlineSearch size={30} />
               </button>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import About from "./components/About";
 import Cart from "./components/Cart";
 import Home from "./components/Home";
@@ -13,14 +13,34 @@ import axios from "axios";
 
 function App() {
   const [products, setProducts] = useState<ProductProps[]>([]);
+  const [tempProducts, setTempProducts] = useState<ProductProps[]>([]);
   const [cart, setCart] = useState<ProductProps[]>([]);
   const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
     loggedIn: false,
     user: {},
   });
-
-  const addToCart = (product: ProductProps) => {
-    setCart([...cart, product]);
+  const navigate = useNavigate();
+  const addToCart = async (product: ProductProps) => {
+    if (!LoggedInInfo.loggedIn) {
+      navigate("/login");
+      return;
+    }
+    const {data} = await axios.get(
+      `http://localhost:4545/user/${LoggedInInfo.user._id}`
+    );
+    const newCart = [...data.user.cart, product];
+    const result = await axios.put(
+      `http://localhost:4545/user/${LoggedInInfo.user._id}/addToCart`,
+      {cart:newCart},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (result.status === 200) {
+      setCart(newCart);
+    }
   };
   useEffect(() => {
     if (LoggedInInfo.loggedIn) {
@@ -28,24 +48,21 @@ function App() {
         const result = await axios.get(
           `http://localhost:4545/${LoggedInInfo.user._id}`
         );
-        if (result.status===200) { 
-          setCart(result.data.cart)
+        if (result.status === 200) {
+          setCart(result.data.cart);
         }
       })();
     }
     (async () => {
-      const result = await axios.get(
-        "http://localhost:4545/product/all"
-      );
-      if (result.status===200) { 
-        setProducts(result.data.products)
+      const result = await axios.get("http://localhost:4545/product/all");
+      if (result.status === 200) {
+        setProducts(result.data.products);
+        setTempProducts(result.data.products);
       }
-    }
-    )()
+    })();
   }, [LoggedInInfo]);
 
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/">
           <Route
@@ -58,6 +75,7 @@ function App() {
                 products={products}
                 LoggedInInfo={LoggedInInfo}
                 setCart={setCart}
+                tempProducts={tempProducts}
               />
             }
           />
@@ -80,7 +98,6 @@ function App() {
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
   );
 }
 

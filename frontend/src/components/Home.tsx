@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "./Navbar";
 import Product from "./Product";
 import Filter from "./Filter";
@@ -13,6 +13,7 @@ interface HomeProps {
   LoggedInInfo: LoginInfo;
   cart: ProductProps[];
   products: ProductProps[];
+  tempProducts: ProductProps[];
   addToCart: (product: ProductProps) => void;
   setProducts: (products: ProductProps[]) => void;
   setCart: (products: ProductProps[]) => void;
@@ -21,6 +22,7 @@ const Home: React.FC<HomeProps> = ({
   LoggedInInfo,
   cart,
   products,
+  tempProducts,
   addToCart,
   setProducts,
   setCart,
@@ -33,13 +35,13 @@ const Home: React.FC<HomeProps> = ({
     <div className="font-serif w-full">
       <Navbar
         LoggedInInfo={LoggedInInfo}
-        products={products}
+        tempProducts={tempProducts}
         cart={cart}
         setProducts={setProducts}
       />
       <div className="flex w-full h-fi">
         <div className="w-1/6">
-          <Filter setProducts={setProducts} products={products} />
+          <Filter setProducts={setProducts} products={tempProducts} />
         </div>
         <div className="w-5/6 flex flex-col">
           <div className="w-full text-center p-4">

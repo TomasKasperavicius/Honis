@@ -22,7 +22,10 @@ const Product: React.FC<ProductProps> = ({
     }
     return (
       <div key={id}>
-        {words.join(" ") as string}: {entry[1] as string}
+        {words.join(" ") as string}:{" "}
+        {entry[0] === "Capacity"
+          ? (entry[1] as string) + " ml"
+          : (entry[1] as string)}
       </div>
     );
   });
@@ -38,10 +41,10 @@ const Product: React.FC<ProductProps> = ({
         )}
       </div>
       <div className="flex-col m-2 text-center">
-        <img className="w-52 h-52 mx-auto" src={product.image} />
+        <img alt="product" className="w-52 h-52 mx-auto" src={product.image} />
       </div>
-        <div>Price: {product.price.$numberDecimal}&euro;</div>
-        <div>Units: {product.units}</div>
+      <div>Price: {product.price.$numberDecimal}&euro;</div>
+      <div>Units: {product.units}</div>
     </div>
   );
 };

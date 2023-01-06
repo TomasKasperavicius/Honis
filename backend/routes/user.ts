@@ -57,6 +57,14 @@ router.get("/all", async (_: Request, res: Response) => {
     res.status(500).send({ message: error });
   }
 });
+router.put("/:id/addToCart", async (req: Request, res: Response) => {
+  try {
+    const user = await User.updateOne({ _id: req.params.id },{cart:req.body.cart});
+    res.status(200).send({ message: "success"});
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+});
 router
   .route("/:id")
   .get(async (req: Request, res: Response) => {

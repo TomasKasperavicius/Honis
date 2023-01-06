@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema(
     username: { type: String, default: "" },
     password: { type: String, default: "" },
     email: { type: String, default: "" },
-    cart: [{type:productSchema, default: [] }],
+    cart: [{ type: productSchema, default: [] }],
   },
-  { versionKey: false }
+  { versionKey: false, minimize: false }
 );
 export const User = mongoose.model("User", userSchema);

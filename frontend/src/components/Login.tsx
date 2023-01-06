@@ -29,7 +29,6 @@ const Login: React.FC<LoginProps> = ({
       if (status !== 200) {
         throw new Error("Wrong credentials");
       }
-      console.log(data);
       setLoggedInInfo({
         loggedIn: true,
         user: data.user,
