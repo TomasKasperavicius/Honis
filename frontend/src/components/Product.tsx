@@ -1,14 +1,15 @@
 import React from "react";
 
-export interface ProductProps {
-  product: {
-    _id: string;
+export interface product{
+  _id: string;
     title: string;
     units: number;
     price: { $numberDecimal: number };
     description: {};
     image: string;
-  };
+}
+export interface ProductProps {
+  product: product
 }
 const Product: React.FC<ProductProps> = ({
   product,
@@ -33,7 +34,10 @@ const Product: React.FC<ProductProps> = ({
     <div className="flex-col w-full h-full">
       <div>Title: {product.title}</div>
       <div>
+        <div className="border-b-2">
+
         Description <br />
+        </div>
         {Object.keys(descriptionBreakdown).length === 0 ? (
           <i>Empty</i>
         ) : (

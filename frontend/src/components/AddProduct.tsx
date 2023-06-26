@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ProductProps } from "./Product";
+import {  product } from "./Product";
 interface AddProductInfo {
   image?: string;
   price: number;
@@ -10,8 +10,8 @@ interface AddProductInfo {
   description: { HoneyType: string; Capacity: string };
 }
 interface AddProductProps {
-  products: ProductProps[];
-  setProducts: (products: ProductProps[]) => void;
+  products: product[];
+  setProducts: (products: product[]) => void;
 }
 const AddProduct: React.FC<AddProductProps> = ({
   products,
@@ -163,7 +163,7 @@ const AddProduct: React.FC<AddProductProps> = ({
           />
         </div>
         <button
-          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
           type="submit"
         >
           Add

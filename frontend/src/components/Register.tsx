@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { GiDrippingHoney } from "react-icons/gi";
+import { IconContext } from "react-icons";
+
 interface RegisterProps {
   setLoggedInInfo: ({}: any) => void;
 }
-interface RegisterInfo{
-  email: string,
-  username: string,
-  password: string,
+type Role = 'admin' | 'user';
+
+interface RegisterInfo {
+  email: string;
+  username: string;
+  password: string;
+  role: Role;
 }
 const Register: React.FC<RegisterProps> = ({
   setLoggedInInfo,
@@ -16,6 +22,7 @@ const Register: React.FC<RegisterProps> = ({
     email: "",
     username: "",
     password: "",
+    role:"user"
   });
   const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +51,17 @@ const Register: React.FC<RegisterProps> = ({
     <div className="w-full h-screen flex justify-center items-center">
       <form
         onSubmit={(e) => register(e)}
-        className="w-1/4 h-3/4 flex flex-col justify-evenly items-center bg-amber-100 rounded p-2"
+        className="w-1/4 h-3/4 flex flex-col items-center bg-opacity-30 bg-amber-500 rounded p-2"
       >
-        <div>
+        <div className="p-4">
+          <IconContext.Provider value={{ size: "40px" }}>
+            <GiDrippingHoney style={{ color: "orange" }} />
+            <i className="text-white">
+              <b>Honis</b>
+            </i>
+          </IconContext.Provider>
+        </div>
+        <div className="p-4">
           <label htmlFor="username">Username: </label>
           <br />
           <input
@@ -58,7 +73,7 @@ const Register: React.FC<RegisterProps> = ({
             required
           />
         </div>
-        <div>
+        <div className="p-4">
           <label htmlFor="email">Email: </label>
           <br />
           <input
@@ -70,7 +85,7 @@ const Register: React.FC<RegisterProps> = ({
             required
           />
         </div>
-        <div>
+        <div className="p-4">
           <label htmlFor="password">Password: </label>
           <br />
           <input
@@ -83,7 +98,7 @@ const Register: React.FC<RegisterProps> = ({
           />
         </div>
         <button
-          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
           type="submit"
         >
           Register

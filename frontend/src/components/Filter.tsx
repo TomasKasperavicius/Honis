@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import { ProductProps } from "./Product";
+import { product } from "./Product";
 interface FilterProps {
-  products: ProductProps[];
-  setProducts: (products: ProductProps[]) => void;
+  products: product[];
+  setProducts: (products: product[]) => void;
 }
 export interface FilterType {
   [key: string]: string | number | undefined;
@@ -103,27 +103,29 @@ const Filter: React.FC<FilterProps> = ({
     setProducts(products.filter((obj) => predicate(obj)));
   };
   return (
-    <div className="flex-col border-2 m-2">
-      Price:
-      <div className="grid grid-cols-3 grid-rows-1 gap-4 bg-red-100">
-        <div>
+    <div className="h-full bg-opacity-30 bg-amber-500">
+      <div className="w-full  p-2 ">
+        <b> Price:</b>
+      </div>
+      <div className="grid grid-cols-4 grid-rows-1 gap-y-4  h-fit">
+        <div className="col-span-2 px-2">
           <label htmlFor="FromPrice">From</label>
         </div>
-        <div className="flex items-center col-span-2">
+        <div className="col-span-2">
           <input
-            className="w-full h-4"
+            className="w-16 h-4"
             type="number"
             id="FromPrice"
             min={0}
             onChange={(e) => changePriceFilter(e)}
           ></input>
         </div>
-        <div>
+        <div className="col-span-2 px-2">
           <label htmlFor="ToPrice">To</label>
         </div>
-        <div className="flex items-center col-span-2">
+        <div className="col-span-2">
           <input
-            className="w-full h-4"
+            className="w-16 h-4"
             type="number"
             id="ToPrice"
             onChange={(e) => changePriceFilter(e)}
@@ -131,17 +133,16 @@ const Filter: React.FC<FilterProps> = ({
           ></input>
         </div>
       </div>
-      Honey type:
+      <div className="w-full px-2 py-4">
+        <b>Honey type:</b>
+      </div>
       {HoneyTypes.map((obj, id) => {
         return (
-          <div
-            key={id}
-            className="grid grid-cols-3 grid-rows-1 gap-4 bg-red-100"
-          >
-            <div className="col-span-2">
+          <div key={id} className="grid grid-cols-4 py-1 grid-rows-1  ">
+            <div className="col-span-3 px-2">
               <label>{obj.field}</label>
             </div>
-            <div className="flex items-center">
+            <div className="col-span-1 flex items-center justify-center">
               <input
                 className="w-4 h-4"
                 type="checkbox"
@@ -159,17 +160,16 @@ const Filter: React.FC<FilterProps> = ({
           </div>
         );
       })}
-      Capacity:
+      <div className="w-full px-2  py-4">
+        <b> Capacity:</b>
+      </div>
       {Capacities.map((obj, id) => {
         return (
-          <div
-            key={id}
-            className="grid grid-cols-3 grid-rows-1 gap-4 bg-red-100"
-          >
-            <div className="col-span-2">
+          <div key={id} className="grid grid-cols-4 grid-rows-1 py-1  ">
+            <div className="col-span-3 px-2">
               <label>{obj.field + " ml"}</label>
             </div>
-            <div className="flex items-center">
+            <div className="col-span-1 flex items-center justify-center">
               <input
                 className="w-4 h-4"
                 type="checkbox"

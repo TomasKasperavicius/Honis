@@ -6,21 +6,21 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import NoPage from "./components/NoPage";
 import Register from "./components/Register";
-import { ProductProps } from "./components/Product";
+import { ProductProps, product } from "./components/Product";
 import { LoginInfo } from "./components/Home";
 import AddProduct from "./components/AddProduct";
 import axios from "axios";
 
 function App() {
-  const [products, setProducts] = useState<ProductProps[]>([]);
-  const [tempProducts, setTempProducts] = useState<ProductProps[]>([]);
-  const [cart, setCart] = useState<ProductProps[]>([]);
+  const [products, setProducts] = useState<product[]>([]);
+  const [tempProducts, setTempProducts] = useState<product[]>([]);
+  const [cart, setCart] = useState<product[]>([]);
   const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
     loggedIn: false,
-    user: {},
+    user: {_id:"",cart:[],email:"",password:"",username:""},
   });
   const navigate = useNavigate();
-  const addToCart = async (product: ProductProps) => {
+  const addToCart = async (product: product) => {
     if (!LoggedInInfo.loggedIn) {
       navigate("/login");
       return;

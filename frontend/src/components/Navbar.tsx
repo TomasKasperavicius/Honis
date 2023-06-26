@@ -4,13 +4,13 @@ import { IconContext } from "react-icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { ProductProps } from "./Product";
+import { product } from "./Product";
 import { LoginInfo } from "./Home";
 interface NavbarProps {
   LoggedInInfo: LoginInfo;
-  tempProducts: ProductProps[];
-  cart: ProductProps[];
-  setProducts: (products: ProductProps[]) => void;
+  tempProducts: product[];
+  cart: product[];
+  setProducts: (products: product[]) => void;
 }
 const Navbar: React.FC<NavbarProps> = ({
   LoggedInInfo,
@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({
   setProducts,
 }: NavbarProps): JSX.Element => {
   const inputElement = useRef<HTMLInputElement | null>(null);
-  const predicate = ({description}: any): boolean => {
+  const predicate = ({ description }: any): boolean => {
     const arr: boolean[] = [];
     for (let key in description) {
       const result = description[key].toLowerCase();
@@ -32,22 +32,25 @@ const Navbar: React.FC<NavbarProps> = ({
   };
   return (
     <IconContext.Provider value={{ size: "40px" }}>
-      <div className="flex justify-around bg-gradient-to-r to-indigo-500 via-purple-500 from-pink-500">
-        <div className="m-2">
-          <GiDrippingHoney style={{ color: "yellow" }} />
+      <div className="flex justify-around bg-amber-300 ">
+        <div className="m-2 flex justify-center items-center">
+          <GiDrippingHoney style={{ color: "orange" }} />
+          <i className="px-4 text-white">
+            <b>Honis</b>
+          </i>
         </div>
         <div className="w-3/6 flex justify-evenly items-center  m-2 text-white">
           <Link className="hover:opacity-70" to="/about">
-            About
+            <b>About</b>
           </Link>
           <a className="hover:opacity-70" href="/">
-            Categories
+            <b>Categories</b>
           </a>
         </div>
         <div className="w-3/6 flex justify-evenly items-center m-2">
           <div className="relative w-1/2">
             <input
-              className="w-full h-8 rounded-xl"
+              className="w-full h-8 rounded-xl px-1"
               placeholder="Search..."
               ref={inputElement}
             ></input>
@@ -57,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
           </div>
-          <div className="flex relative w-12 h-full justify-center items-center">
+          <div className="flex relative w-12 h-full justify-center items-center hover:opacity-70">
             <Link to="/cart">
               <FaShoppingCart style={{ color: "white" }} size={30} />
             </Link>
@@ -72,25 +75,25 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
         <div className="w-1/6 flex justify-evenly items-center">
           {LoggedInInfo.loggedIn ? (
-            <div className="text-center text-white">
+            <div className="text-center text-white font-bold">
               Logged in as: {LoggedInInfo.user.username}
             </div>
           ) : (
             <>
               <Link to="/login">
                 <button
-                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
                   type="button"
                 >
-                  Login
+                  <b>Login</b>
                 </button>
               </Link>
               <Link to="/register">
                 <button
-                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
                   type="button"
                 >
-                  Sign up
+                  <b>Register</b>
                 </button>
               </Link>
             </>

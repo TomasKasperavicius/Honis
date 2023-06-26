@@ -2,21 +2,28 @@ import React from "react";
 import Navbar from "./Navbar";
 import Product from "./Product";
 import Filter from "./Filter";
-import { ProductProps } from "./Product";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "./AddToCart";
+import { product } from "./Product";
 export interface LoginInfo {
   loggedIn: boolean;
-  user: any;
+  user: UserInfo;
+}
+export interface UserInfo{
+  _id:string,
+  username: string,
+  password: string,
+  email:string,
+  cart: product[]
 }
 interface HomeProps {
   LoggedInInfo: LoginInfo;
-  cart: ProductProps[];
-  products: ProductProps[];
-  tempProducts: ProductProps[];
-  addToCart: (product: ProductProps) => void;
-  setProducts: (products: ProductProps[]) => void;
-  setCart: (products: ProductProps[]) => void;
+  cart: product[];
+  products: product[];
+  tempProducts: product[];
+  addToCart: (product: product) => void;
+  setProducts: (products: product[]) => void;
+  setCart: (products: product[]) => void;
 }
 const Home: React.FC<HomeProps> = ({
   LoggedInInfo,
@@ -32,22 +39,22 @@ const Home: React.FC<HomeProps> = ({
     navigate("/addProduct");
   };
   return (
-    <div className="font-serif w-full">
+    <div className="font-serif w-full h-screen overflow-clip">
       <Navbar
         LoggedInInfo={LoggedInInfo}
         tempProducts={tempProducts}
         cart={cart}
         setProducts={setProducts}
       />
-      <div className="flex w-full h-fi">
-        <div className="w-1/6">
+      <div className="flex w-full h-full">
+        <div className="w-1/6 h-full  ">
           <Filter setProducts={setProducts} products={tempProducts} />
         </div>
         <div className="w-5/6 flex flex-col">
           <div className="w-full text-center p-4">
             <button
               onClick={addProduct}
-              className="w-28 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+              className="w-fit m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
             >
               Add product
             </button>

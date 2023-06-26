@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Product, { ProductProps } from "../components/Product";
+import Product, { product } from "../components/Product";
 import { Link } from "react-router-dom";
-export interface ProductsProps {
-  products: ProductProps[];
-}
+
 interface CartProps {
-  cart: ProductProps[];
-  setCart: (products: ProductProps[]) => void;
+  cart: product[];
+  setCart: (products: product[]) => void;
 }
 const Cart: React.FC<CartProps> = ({
   cart,
@@ -27,7 +25,7 @@ const Cart: React.FC<CartProps> = ({
         <>
           <div className="flex justify-around items-center px-4 bg-gradient-to-r to-indigo-500 via-purple-500 from-pink-500">
             <Link to="/">
-              <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70">
+              <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70">
                 Back
               </button>
             </Link>
@@ -35,7 +33,7 @@ const Cart: React.FC<CartProps> = ({
 
             Total cost: {cost}&euro;
             </div>
-            <button className="w-28 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70">
+            <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70">
               Check out
             </button>
           </div>
@@ -48,7 +46,7 @@ const Cart: React.FC<CartProps> = ({
                   <Product product={product} />
                   <div className="flex justify-center">
                     <button
-                      className="m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+                      className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
                       onClick={() => {
                         setCart(
                           cart.filter((obj: any) => obj._id !== product._id)
@@ -68,7 +66,7 @@ const Cart: React.FC<CartProps> = ({
         <>
           <div className="flex px-4 bg-gradient-to-r to-indigo-500 via-purple-500 from-pink-500">
             <Link to="/">
-              <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70">
+              <button className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70">
                 Back
               </button>
             </Link>

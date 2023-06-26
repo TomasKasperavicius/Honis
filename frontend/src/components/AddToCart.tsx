@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { ProductProps } from "./Product";
+import { product } from "./Product";
 interface AddToCartProps {
   product: any;
-  cart: ProductProps[];
-  products: ProductProps[];
-  addToCart: (product: ProductProps) => void;
-  setCart: (products: ProductProps[]) => void;
+  cart: product[];
+  products: product[];
+  addToCart: (product: product) => void;
+  setCart: (products: product[]) => void;
 }
 
 const AddToCart: React.FC<AddToCartProps> = ({
@@ -52,7 +52,7 @@ const AddToCart: React.FC<AddToCartProps> = ({
         </button>
       </div>
       <button
-        className="w-28 rounded-xl p-2 bg-gradient-to-r from-amber-300 via-orange-300 to-yellow-500 text-white hover:opacity-70"
+        className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
         onClick={() => handleAddToCart(product)}
       >
         Add to cart
