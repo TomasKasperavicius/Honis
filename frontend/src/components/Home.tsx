@@ -9,12 +9,13 @@ export interface LoginInfo {
   loggedIn: boolean;
   user: UserInfo;
 }
-export interface UserInfo{
-  _id:string,
-  username: string,
-  password: string,
-  email:string,
-  cart: product[]
+export interface UserInfo {
+  _id: string;
+  username: string;
+  role: string;
+  password: string;
+  email: string;
+  cart: product[];
 }
 interface HomeProps {
   LoggedInInfo: LoginInfo;
@@ -24,6 +25,7 @@ interface HomeProps {
   addToCart: (product: product) => void;
   setProducts: (products: product[]) => void;
   setCart: (products: product[]) => void;
+  setLoggedInInfo: ({}: any) => void;
 }
 const Home: React.FC<HomeProps> = ({
   LoggedInInfo,
@@ -33,6 +35,7 @@ const Home: React.FC<HomeProps> = ({
   addToCart,
   setProducts,
   setCart,
+  setLoggedInInfo,
 }: HomeProps): JSX.Element => {
   const navigate = useNavigate();
   const addProduct = () => {
@@ -45,20 +48,25 @@ const Home: React.FC<HomeProps> = ({
         tempProducts={tempProducts}
         cart={cart}
         setProducts={setProducts}
+        setLoggedInInfo={setLoggedInInfo}
       />
       <div className="flex w-full h-full">
         <div className="w-1/6 h-full  ">
           <Filter setProducts={setProducts} products={tempProducts} />
         </div>
         <div className="w-5/6 flex flex-col">
-          <div className="w-full text-center p-4">
-            <button
-              onClick={addProduct}
-              className="w-fit m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-            >
-              Add product
-            </button>
-          </div>
+          {LoggedInInfo.user.role === "admin" ? (
+            <div className="w-full text-center p-4">
+              <button
+                onClick={addProduct}
+                className="w-fit m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+              >
+                Add product
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="grid grid-cols-4 grid-rows-4 full h-fit gap-4">
             {products.map((product: any, id) => {
               return (

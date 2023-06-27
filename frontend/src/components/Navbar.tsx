@@ -11,12 +11,14 @@ interface NavbarProps {
   tempProducts: product[];
   cart: product[];
   setProducts: (products: product[]) => void;
+  setLoggedInInfo: ({}: any) => void;
 }
 const Navbar: React.FC<NavbarProps> = ({
   LoggedInInfo,
   tempProducts,
   cart,
   setProducts,
+  setLoggedInInfo,
 }: NavbarProps): JSX.Element => {
   const inputElement = useRef<HTMLInputElement | null>(null);
   const predicate = ({ description }: any): boolean => {
@@ -26,6 +28,19 @@ const Navbar: React.FC<NavbarProps> = ({
       arr.push(result.includes(inputElement.current!.value.toLowerCase()));
     }
     return arr.some((e) => e === true);
+  };
+  const logout = () => {
+    setLoggedInInfo({
+      loggedIn: false,
+      user: {
+        _id: "",
+        cart: [],
+        email: "",
+        password: "",
+        username: "",
+        role: "user",
+      },
+    });
   };
   const searchSubmit = () => {
     setProducts(tempProducts.filter((obj) => predicate(obj)));
@@ -75,8 +90,15 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
         <div className="w-1/6 flex justify-evenly items-center">
           {LoggedInInfo.loggedIn ? (
-            <div className="text-center text-white font-bold">
+            <div className="text-center text-white font-bold flex w-full">
               Logged in as: {LoggedInInfo.user.username}
+              <button
+                className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+                type="button"
+                onClick={logout}
+              >
+                <b>Logout</b>
+              </button>
             </div>
           ) : (
             <>

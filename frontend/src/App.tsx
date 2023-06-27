@@ -17,7 +17,7 @@ function App() {
   const [cart, setCart] = useState<product[]>([]);
   const [LoggedInInfo, setLoggedInInfo] = useState<LoginInfo>({
     loggedIn: false,
-    user: {_id:"",cart:[],email:"",password:"",username:""},
+    user: {_id:"",cart:[],email:"",password:"",username:"", role:"user"},
   });
   const navigate = useNavigate();
   const addToCart = async (product: product) => {
@@ -76,6 +76,7 @@ function App() {
                 LoggedInInfo={LoggedInInfo}
                 setCart={setCart}
                 tempProducts={tempProducts}
+                setLoggedInInfo={setLoggedInInfo}
               />
             }
           />
