@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = ({
     e.preventDefault();
     try {
       const { status, data } = await axios.post(
-        "http://localhost:4545/user/login",
+        `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/login`,
         input
       );
       if (status !== 200) {

@@ -33,7 +33,7 @@ const AddToCart: React.FC<AddToCartProps> = ({
     }
   };
   return (
-    <div className="flex flex-col justify-center items-center h-1/12 m-4">
+    <div className="flex justify-center items-center h-1/12 m-4">
       <div className="p-2">
         <button
           onClick={() => setCount(count - 1 < 1 ? 1 : count - 1)}
@@ -52,7 +52,7 @@ const AddToCart: React.FC<AddToCartProps> = ({
         </button>
       </div>
       <button
-        className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+        className="w-1/3 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
         onClick={() => handleAddToCart(product)}
       >
         Add to cart

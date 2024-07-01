@@ -57,7 +57,7 @@ const AddProduct: React.FC<AddProductProps> = ({
         })
       );
       const { status, data } = await axios.post(
-        "http://localhost:4545/product/add",
+        `${process.env.REACT_APP_REMOTE_SERVER_URL}/product/add`,
         form,
         {
           headers: {
@@ -65,6 +65,7 @@ const AddProduct: React.FC<AddProductProps> = ({
           },
         }
       );
+      console.log(data)
       if (status !== 200) {
         throw new Error("Wrong credentials");
       }

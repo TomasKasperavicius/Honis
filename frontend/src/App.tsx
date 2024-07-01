@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import NoPage from "./components/NoPage";
 import Register from "./components/Register";
-import { ProductProps, product } from "./components/Product";
+import { product } from "./components/Product";
 import { LoginInfo } from "./components/Home";
 import AddProduct from "./components/AddProduct";
 import axios from "axios";
@@ -26,11 +26,11 @@ function App() {
       return;
     }
     const {data} = await axios.get(
-      `http://localhost:4545/user/${LoggedInInfo.user._id}`
+      `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/${LoggedInInfo.user._id}`
     );
     const newCart = [...data.user.cart, product];
     const result = await axios.put(
-      `http://localhost:4545/user/${LoggedInInfo.user._id}/addToCart`,
+      `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/${LoggedInInfo.user._id}/addToCart`,
       {cart:newCart},
       {
         headers: {
@@ -46,7 +46,7 @@ function App() {
     if (LoggedInInfo.loggedIn) {
       (async () => {
         const result = await axios.get(
-          `http://localhost:4545/${LoggedInInfo.user._id}`
+          `${process.env.REACT_APP_REMOTE_SERVER_URL}/${LoggedInInfo.user._id}`
         );
         if (result.status === 200) {
           setCart(result.data.cart);
@@ -54,7 +54,7 @@ function App() {
       })();
     }
     (async () => {
-      const result = await axios.get("http://localhost:4545/product/all");
+      const result = await axios.get(`${process.env.REACT_APP_REMOTE_SERVER_URL}/product/all`);
       if (result.status === 200) {
         setProducts(result.data.products);
         setTempProducts(result.data.products);

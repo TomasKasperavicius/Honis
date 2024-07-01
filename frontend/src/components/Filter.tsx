@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { product } from "./Product";
+import { Paper } from "@mui/material";
 interface FilterProps {
   products: product[];
   setProducts: (products: product[]) => void;
@@ -103,7 +104,7 @@ const Filter: React.FC<FilterProps> = ({
     setProducts(products.filter((obj) => predicate(obj)));
   };
   return (
-    <div className="h-full bg-opacity-30 bg-amber-500">
+    <Paper elevation={10} style={{backgroundColor: "rgba(245 ,158, 11,0.3)", height:"100%"}}  >
       <div className="w-full  p-2 ">
         <b> Price:</b>
       </div>
@@ -182,7 +183,7 @@ const Filter: React.FC<FilterProps> = ({
           </div>
         );
       })}
-    </div>
+    </Paper>
   );
 };
 export default Filter;

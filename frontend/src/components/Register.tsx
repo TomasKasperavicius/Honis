@@ -32,7 +32,7 @@ const Register: React.FC<RegisterProps> = ({
     e.preventDefault();
     try {
       const { status, data } = await axios.post(
-        "http://localhost:4545/user/register",
+        `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/register`,
         input
       );
       if (status !== 200) {

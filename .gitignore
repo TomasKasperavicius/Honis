@@ -1,4 +1,7 @@
 .env
+.env.*
 *.rest
 node_modules
 *.http
+public/
+

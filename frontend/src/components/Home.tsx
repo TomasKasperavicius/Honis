@@ -5,6 +5,7 @@ import Filter from "./Filter";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "./AddToCart";
 import { product } from "./Product";
+import { Grid, Paper } from "@mui/material";
 export interface LoginInfo {
   loggedIn: boolean;
   user: UserInfo;
@@ -51,7 +52,7 @@ const Home: React.FC<HomeProps> = ({
         setLoggedInInfo={setLoggedInInfo}
       />
       <div className="flex w-full h-full">
-        <div className="w-1/6 h-full  ">
+        <div className="w-1/6 h-full pl-1 pt-1 ">
           <Filter setProducts={setProducts} products={tempProducts} />
         </div>
         <div className="w-5/6 flex flex-col">
@@ -67,13 +68,11 @@ const Home: React.FC<HomeProps> = ({
           ) : (
             <></>
           )}
-          <div className="grid grid-cols-4 grid-rows-4 full h-fit gap-4">
+          <Grid container style={{margin:10}} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {products.map((product: any, id) => {
               return (
-                <div
-                  key={id}
-                  className="m-2 p-2 flex-col w-full h-5/6 border-2 border-solid"
-                >
+                <Grid item xs={2} sm={3} md={3} key={id}>
+                  <Paper elevation={10}>
                   <Product product={product} />
                   <AddToCart
                     product={product}
@@ -82,10 +81,11 @@ const Home: React.FC<HomeProps> = ({
                     cart={cart}
                     setCart={setCart}
                   />
-                </div>
+                  </Paper>
+                </Grid>
               );
             })}
-          </div>
+          </Grid>
         </div>
       </div>
     </div>

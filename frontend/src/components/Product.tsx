@@ -25,13 +25,13 @@ const Product: React.FC<ProductProps> = ({
       <div key={id}>
         {words.join(" ") as string}:{" "}
         {entry[0] === "Capacity"
-          ? (entry[1] as string) + " ml"
+          ? (entry[1] as string) 
           : (entry[1] as string)}
       </div>
     );
   });
   return (
-    <div className="flex-col w-full h-full">
+    <div className="flex-col w-full h-full pl-4">
       <div>Title: {product.title}</div>
       <div>
         <div className="border-b-2">
@@ -44,11 +44,12 @@ const Product: React.FC<ProductProps> = ({
           descriptionBreakdown
         )}
       </div>
-      <div className="flex-col m-2 text-center">
+      <div>Price: {product.price.$numberDecimal}&euro;</div>
+      <div>Available units: {product.units}</div>
+      <div className="flex items-center  justify-center pr-4 pt-4">
         <img alt="product" className="w-52 h-52 mx-auto" src={product.image} />
       </div>
-      <div>Price: {product.price.$numberDecimal}&euro;</div>
-      <div>Units: {product.units}</div>
+      
     </div>
   );
 };

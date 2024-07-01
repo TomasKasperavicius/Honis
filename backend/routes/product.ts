@@ -19,7 +19,7 @@ router.post("/add", async (req: Request, res: Response) => {
       const uploadedFile: UploadedFile | UploadedFile[] = req.files
         .image as UploadedFile;
       const uploadPath: string = path.resolve("./public/" + uploadedFile.name);
-      req.body.image = process.env.FILE_API + uploadedFile.name;
+      req.body.image = `${process.env.SERVER_URL}:${process.env.PORT}/${uploadedFile.name}`;
       await uploadedFile.mv(uploadPath);
       req.body.description = JSON.parse(req.body.description)
       const product = new Product(req.body);
