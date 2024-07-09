@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {  product } from "./Product";
+import { product } from "./Product";
 interface AddProductInfo {
   image?: string;
   price: number;
   units: number;
   title: string;
-  description: { HoneyType: string; Capacity: string };
+  description: { HoneyType: string; Capacity: number };
 }
 interface AddProductProps {
   products: product[];
@@ -24,7 +24,7 @@ const AddProduct: React.FC<AddProductProps> = ({
     units: 1,
     description: {
       HoneyType: "",
-      Capacity: "",
+      Capacity: 0,
     },
   });
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const AddProduct: React.FC<AddProductProps> = ({
           },
         }
       );
-      console.log(data)
+      console.log(data);
       if (status !== 200) {
         throw new Error("Wrong credentials");
       }
@@ -163,12 +163,20 @@ const AddProduct: React.FC<AddProductProps> = ({
             required
           />
         </div>
-        <button
-          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-          type="submit"
-        >
-          Add
-        </button>
+        <div className="flex justify-evenly w-full">
+          <button
+            onClick={() => navigate("/")}
+            className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+          >
+            Back
+          </button>
+          <button
+            className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+            type="submit"
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

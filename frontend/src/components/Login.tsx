@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { GiDrippingHoney } from "react-icons/gi";
 import { IconContext } from "react-icons";
+import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
 
 interface LoginProps {
   setLoggedInInfo: ({}: any) => void;
@@ -22,8 +24,7 @@ const Login: React.FC<LoginProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.id]: e.target.value });
   };
-  const login = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const login = async () => {
     try {
       const { status, data } = await axios.post(
         `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/login`,
@@ -42,14 +43,20 @@ const Login: React.FC<LoginProps> = ({
     }
   };
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <form
-        onSubmit={(e) => login(e)}
-        className="w-1/4 h-3/4 flex flex-col items-center justify-center bg-opacity-30 bg-amber-500 rounded p-2"
+    <div
+      style={{ background: "rgba(0,0,0,0.1)" }}
+      className="w-full h-screen flex justify-center items-center"
+    >
+      <Paper
+        elevation={12}
+        sx={{ background: "rgb(245, 158, 11,0.3)" }}
+        className="w-1/4 h-3/4 flex flex-col items-center justify-center bg-amber-500 rounded p-2"
       >
         <IconContext.Provider value={{ size: "40px" }}>
           <GiDrippingHoney style={{ color: "orange" }} />
-          <i className="text-white"><b>Honis</b></i>
+          <i className="text-white">
+            <b>Honis</b>
+          </i>
         </IconContext.Provider>
         <div className="p-4">
           <label htmlFor="email">Email: </label>
@@ -76,12 +83,16 @@ const Login: React.FC<LoginProps> = ({
           />
         </div>
         <button
-          className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-          type="submit"
+          className="w-1/2 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+          type="button"
+          onClick={login}
         >
           Login
         </button>
-      </form>
+        <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+      </Paper>
     </div>
   );
 };

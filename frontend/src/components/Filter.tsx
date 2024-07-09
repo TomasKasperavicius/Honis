@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { product } from "./Product";
-import { Paper } from "@mui/material";
+import { Paper, Slider } from "@mui/material";
 interface FilterProps {
   products: product[];
   setProducts: (products: product[]) => void;
@@ -19,8 +19,6 @@ const Filter: React.FC<FilterProps> = ({
   const filter = useRef<FilterType>({
     Capacity: undefined,
     HoneyType: undefined,
-    FromPrice: "",
-    ToPrice: "",
   });
   const [HoneyTypes, setHoneyTypes] = useState<FilterState[]>([
     { field: "Clover", checked: false },
@@ -40,40 +38,36 @@ const Filter: React.FC<FilterProps> = ({
     { field: 750, checked: false },
     { field: 1000, checked: false },
   ]);
-  const checkPriceInterval = ({ price }: any): boolean => {
+  const MAX = 100;
+  const MIN = 0;
+  const marks = [
+    {
+      value: MIN,
+      label: "",
+    },
+    {
+      value: MAX,
+      label: "",
+    },
+  ];
+  const checkPriceInterval = ({ price }: any, min: number, max:number): boolean => {
     const Price = parseFloat(price.$numberDecimal);
-    const ToPrice = parseFloat(filter.current.ToPrice as string);
-    const FromPrice = parseFloat(filter.current.FromPrice as string);
-    if (filter.current.FromPrice === "" && filter.current.ToPrice === "")
-      return true;
-    if (filter.current.FromPrice !== "" && filter.current.ToPrice === "") {
-      if (Price >= FromPrice) {
-        return true;
-      }
-      return false;
-    }
-    if (filter.current.ToPrice !== "" && filter.current.FromPrice === "") {
-      if (Price <= ToPrice!) {
-        return true;
-      }
-      return false;
-    }
-    if (Price >= FromPrice && Price <= ToPrice) {
+    if (Price >= min && Price <= max) {
       return true;
     }
     return false;
   };
-  const predicate = (obj: any): boolean => {
+  const predicate = (obj: any, min:number = 0, max:number = 100): boolean => {
     const { description }: any = obj;
     for (let key in description) {
       if (filter.current[key] === undefined) {
         continue;
       }
-      if (description[key] !== filter.current[key]) {
+      if (description[key] != filter.current[key]) {
         return false;
       }
     }
-    return checkPriceInterval(obj) === true ? true : false;
+    return checkPriceInterval(obj, min, max);
   };
 
   const changeFilter = (
@@ -99,39 +93,54 @@ const Filter: React.FC<FilterProps> = ({
     setArrState(result);
     setProducts(products.filter((obj) => predicate(obj)));
   };
-  const changePriceFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    filter.current[e.target.id] = e.target.value;
-    setProducts(products.filter((obj) => predicate(obj)));
+
+  const [min, setMin] = useState<number>(MIN);
+  const [max, setMax] = useState<number>(MAX);
+
+  const handleMinChange = (_: Event, newValue: number | number[]) => {
+    setMin(newValue as number);
+    setProducts(products.filter((obj) => predicate(obj, newValue as number, max)));
+  };
+  const handleMaxChange = (_: Event, newValue: number | number[]) => {
+    setMax(newValue as number);
+    setProducts(products.filter((obj) => predicate(obj,min, newValue as number)));
   };
   return (
-    <Paper elevation={10} style={{backgroundColor: "rgba(245 ,158, 11,0.3)", height:"100%"}}  >
+    <Paper
+      elevation={10}
+      style={{ backgroundColor: "rgba(245 ,158, 11,0.3)", height: "100%" }}
+    >
       <div className="w-full  p-2 ">
         <b> Price:</b>
       </div>
       <div className="grid grid-cols-4 grid-rows-1 gap-y-4  h-fit">
         <div className="col-span-2 px-2">
-          <label htmlFor="FromPrice">From</label>
+          <label htmlFor="FromPrice">Min price</label>
         </div>
-        <div className="col-span-2">
-          <input
-            className="w-16 h-4"
-            type="number"
-            id="FromPrice"
-            min={0}
-            onChange={(e) => changePriceFilter(e)}
-          ></input>
+        <div className="col-span-2 pr-5">
+          <Slider
+            marks={marks}
+            step={10}
+            value={min}
+            valueLabelDisplay="auto"
+            min={MIN}
+            max={MAX}
+            onChange={handleMinChange}
+          />
         </div>
         <div className="col-span-2 px-2">
-          <label htmlFor="ToPrice">To</label>
+          <label htmlFor="ToPrice">Max price</label>
         </div>
-        <div className="col-span-2">
-          <input
-            className="w-16 h-4"
-            type="number"
-            id="ToPrice"
-            onChange={(e) => changePriceFilter(e)}
-            min={0}
-          ></input>
+        <div className="col-span-2  pr-5">
+          <Slider
+            marks={marks}
+            step={10}
+            value={max}
+            valueLabelDisplay="auto"
+            min={MIN}
+            max={MAX}
+            onChange={handleMaxChange}
+          />
         </div>
       </div>
       <div className="w-full px-2 py-4">

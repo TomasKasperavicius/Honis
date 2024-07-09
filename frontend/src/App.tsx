@@ -46,10 +46,10 @@ function App() {
     if (LoggedInInfo.loggedIn) {
       (async () => {
         const result = await axios.get(
-          `${process.env.REACT_APP_REMOTE_SERVER_URL}/${LoggedInInfo.user._id}`
+          `${process.env.REACT_APP_REMOTE_SERVER_URL}/user/${LoggedInInfo.user._id}`
         );
         if (result.status === 200) {
-          setCart(result.data.cart);
+          setCart(result.data.cart || []);
         }
       })();
     }
