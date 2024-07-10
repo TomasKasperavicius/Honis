@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { product } from "./Product";
 import { Paper, Slider } from "@mui/material";
 interface FilterProps {
@@ -11,6 +11,10 @@ export interface FilterType {
 interface FilterState {
   field: string | number;
   checked: boolean;
+}
+interface MarkProps {
+  value:number;
+  label:string;
 }
 const Filter: React.FC<FilterProps> = ({
   products,
@@ -38,18 +42,8 @@ const Filter: React.FC<FilterProps> = ({
     { field: 750, checked: false },
     { field: 1000, checked: false },
   ]);
-  const MAX = 100;
-  const MIN = 0;
-  const marks = [
-    {
-      value: MIN,
-      label: "",
-    },
-    {
-      value: MAX,
-      label: "",
-    },
-  ];
+
+
   const checkPriceInterval = ({ price }: any, min: number, max:number): boolean => {
     const Price = parseFloat(price.$numberDecimal);
     if (Price >= min && Price <= max) {
@@ -93,18 +87,28 @@ const Filter: React.FC<FilterProps> = ({
     setArrState(result);
     setProducts(products.filter((obj) => predicate(obj)));
   };
-
-  const [min, setMin] = useState<number>(MIN);
-  const [max, setMax] = useState<number>(MAX);
-
+  
+  const [minScale, setMinScale] = useState<number>(0);
+  const [maxScale, setMaxScale] = useState<number>(100);
+  const [min, setMin] = useState<number>(minScale);
+  const [max, setMax] = useState<number>(maxScale);
+  const [mark, setMarks] = useState<MarkProps[]>([{value:minScale, label:""},{value:maxScale, label:""}]); 
   const handleMinChange = (_: Event, newValue: number | number[]) => {
+    if(maxScale < (newValue as number)) return
+
     setMin(newValue as number);
     setProducts(products.filter((obj) => predicate(obj, newValue as number, max)));
   };
   const handleMaxChange = (_: Event, newValue: number | number[]) => {
+    if(minScale > (newValue as number)) return
     setMax(newValue as number);
     setProducts(products.filter((obj) => predicate(obj,min, newValue as number)));
   };
+  useEffect(()=>{
+    const arr = products.map(product => product.price.$numberDecimal)
+    setMinScale(Math.min(...arr)) 
+    setMaxScale(Math.max(...arr))
+  },[products])
   return (
     <Paper
       elevation={10}
@@ -115,30 +119,30 @@ const Filter: React.FC<FilterProps> = ({
       </div>
       <div className="grid grid-cols-4 grid-rows-1 gap-y-4  h-fit">
         <div className="col-span-2 px-2">
-          <label htmlFor="FromPrice">Min price</label>
+          <label htmlFor="FromPrice">Min price: {min}</label>
         </div>
         <div className="col-span-2 pr-5">
           <Slider
-            marks={marks}
+            marks={mark}
             step={10}
             value={min}
             valueLabelDisplay="auto"
-            min={MIN}
-            max={MAX}
+            min={minScale}
+            max={maxScale}
             onChange={handleMinChange}
           />
         </div>
         <div className="col-span-2 px-2">
-          <label htmlFor="ToPrice">Max price</label>
+          <label htmlFor="ToPrice">Max price: {max}</label>
         </div>
         <div className="col-span-2  pr-5">
           <Slider
-            marks={marks}
+            marks={mark}
             step={10}
             value={max}
             valueLabelDisplay="auto"
-            min={MIN}
-            max={MAX}
+            min={minScale}
+            max={maxScale}
             onChange={handleMaxChange}
           />
         </div>

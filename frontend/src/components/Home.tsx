@@ -5,7 +5,7 @@ import Filter from "./Filter";
 import { useNavigate } from "react-router-dom";
 import AddToCart from "./AddToCart";
 import { product } from "./Product";
-import { Grid, Paper } from "@mui/material";
+import { Fade, Grid, Paper, Zoom } from "@mui/material";
 export interface LoginInfo {
   loggedIn: boolean;
   user: UserInfo;
@@ -69,8 +69,10 @@ const Home: React.FC<HomeProps> = ({
             <></>
           )}
           <Grid container style={{margin:10}} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            
             {products.map((product: any, id) => {
               return (
+                <Zoom in={true} >
                 <Grid item xs={2} sm={3} md={3} key={id}>
                   <Paper elevation={10}>
                   <Product product={product} />
@@ -83,8 +85,10 @@ const Home: React.FC<HomeProps> = ({
                   />
                   </Paper>
                 </Grid>
+                </Zoom>
               );
             })}
+            
           </Grid>
         </div>
       </div>
