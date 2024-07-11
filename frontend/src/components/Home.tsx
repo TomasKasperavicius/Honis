@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AddToCart from "./AddToCart";
 import { product } from "./Product";
 import { Fade, Grid, Paper, Zoom } from "@mui/material";
+import Footer from "./Footer";
 export interface LoginInfo {
   loggedIn: boolean;
   user: UserInfo;
@@ -43,7 +44,7 @@ const Home: React.FC<HomeProps> = ({
     navigate("/addProduct");
   };
   return (
-    <div className="font-serif w-full h-screen overflow-clip">
+    <div className="font-serif w-full h-full overflow-clip">
       <Navbar
         LoggedInInfo={LoggedInInfo}
         tempProducts={tempProducts}
@@ -57,7 +58,7 @@ const Home: React.FC<HomeProps> = ({
         </div>
         <div className="w-5/6 flex flex-col">
           {LoggedInInfo.user.role === "admin" ? (
-            <div className="w-full text-center p-4">
+            <div className="w-full text-center p-2 flex ">
               <button
                 onClick={addProduct}
                 className="w-fit m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
@@ -88,10 +89,12 @@ const Home: React.FC<HomeProps> = ({
                 </Zoom>
               );
             })}
-            
           </Grid>
+          
         </div>
+        
       </div>
+      <Footer/>
     </div>
   );
 };

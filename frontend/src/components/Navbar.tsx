@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { GiDrippingHoney } from "react-icons/gi";
 import { IconContext } from "react-icons";
 import { FaShoppingCart } from "react-icons/fa";
@@ -6,7 +6,11 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { product } from "./Product";
 import { LoginInfo } from "./Home";
-import { Paper } from "@mui/material";
+import { Avatar, Paper, Popover, Typography } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+
 interface NavbarProps {
   LoggedInInfo: LoginInfo;
   tempProducts: product[];
@@ -22,6 +26,14 @@ const Navbar: React.FC<NavbarProps> = ({
   setLoggedInInfo,
 }: NavbarProps): JSX.Element => {
   const inputElement = useRef<HTMLInputElement | null>(null);
+  const avatarElement = useRef<HTMLDivElement | null>(null);
+  const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
+  const handleAvatarClick = () => {
+    setPopoverOpen(true);
+  };
+  const handleClose = () => {
+    setPopoverOpen(false);
+  };
   const predicate = ({ description }: any): boolean => {
     const arr: boolean[] = [];
     for (let key in description) {
@@ -48,7 +60,15 @@ const Navbar: React.FC<NavbarProps> = ({
   };
   return (
     <IconContext.Provider value={{ size: "40px" }}>
-      <Paper elevation={10}  style={{backgroundColor: "rgba(252, 211, 77,0.8)", display:"flex",justifyContent:"space-around", color:"black"}}>
+      <Paper
+        elevation={10}
+        style={{
+          backgroundColor: "rgba(252, 211, 77,0.8)",
+          display: "flex",
+          justifyContent: "space-around",
+          color: "black",
+        }}
+      >
         <div className="m-2 flex justify-center items-center">
           <GiDrippingHoney style={{ color: "orange" }} />
           <i className="px-4 text-white">
@@ -81,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <FaShoppingCart style={{ color: "white" }} size={30} />
             </Link>
             {cart.length > 0 ? (
-              <div className="bg-red-600 font-extrabold font-mono text-white absolute top-0 right-0 rounded-full w-5 h-5 flex justify-center items-center">
+              <div className="bg-red-600 font-extrabold font-mono text-white absolute top-0 right-0 rounded-full w-4 h-4 flex justify-center items-center">
                 {cart.length}
               </div>
             ) : (
@@ -89,42 +109,68 @@ const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
         </div>
+        {!LoggedInInfo.loggedIn ?
         <div className="w-2/6 flex justify-evenly items-center">
-          {LoggedInInfo.loggedIn ? (
-            <div className="text-center text-white font-bold flex justify-end items-center w-full">
-              <span className="p-4">
-
-              Logged in as: {LoggedInInfo.user.username}
-              </span>
-              <button
-                className="w-20 mr-4 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-                type="button"
-                onClick={logout}
-              >
-                <b>Logout</b>
-              </button>
-            </div>
-          ) : (
-            <>
-              <Link to="/login">
-                <button
-                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-                  type="button"
-                >
-                  <b>Login</b>
-                </button>
-              </Link>
-              <Link to="/register">
-                <button
-                  className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
-                  type="button"
-                >
-                  <b>Register</b>
-                </button>
-              </Link>
-            </>
-          )}
+          <Link to="/login">
+            <button
+              className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+              type="button"
+            >
+              <b>Login</b>
+            </button>
+          </Link>
+          <Link to="/register">
+            <button
+              className="w-20 m-2 rounded-xl p-2 bg-gradient-to-r from-amber-500 via-orange-300 to-yellow-400 text-white hover:opacity-70"
+              type="button"
+            >
+              <b>Register</b>
+            </button>
+          </Link>
         </div>
+        :
+        <div className="flex justify-center items-center pr-2 hover:cursor-pointer">
+          <Avatar alt="Avatar picture" onClick={handleAvatarClick}>
+            {LoggedInInfo.user.username[0]}
+          </Avatar>
+          <Popover
+            id="popover"
+            open={popoverOpen}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            {/* TODO /profile */}
+            <div className="w-36 flex flex-col">
+              <Typography sx={{ p: 1 }}>
+                Logged in as {LoggedInInfo.user.username}
+              </Typography>
+              <Link to={"/"} className="hover:opacity-60 ">
+                <Typography sx={{ p: 1, width: "100%", display: "flex" }}>
+                  Profile <AccountBoxIcon />
+                </Typography>{" "}
+              </Link>
+              <Link to={"/cart"} className="hover:opacity-60 ">
+                <Typography sx={{ p: 1, width: "100%", display: "flex" }}>
+                  Cart <FaShoppingCart size={20} />
+                </Typography>
+              </Link>
+              <Link to={"/"} className="hover:opacity-60 ">
+                <Typography sx={{ p: 1, width: "100%", display: "flex" }}>
+                  Settings <SettingsIcon />
+                </Typography>
+              </Link>
+              <Link to={"/login"} className="hover:opacity-60 ">
+                <Typography sx={{ p: 1, width: "100%", display: "flex" }}>
+                  Logout <LogoutIcon />
+                </Typography>
+              </Link>
+            </div>
+          </Popover>
+        </div>
+        }
       </Paper>
     </IconContext.Provider>
   );
